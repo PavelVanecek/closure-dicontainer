@@ -13,6 +13,8 @@
 This is standalone Node.js module. For Grunt, use [grunt-closure-dicontainer](http://github.com/steida/grunt-closure-dicontainer). For Gulp, use [gulp-closure-dicontainer](http://github.com/steida/gulp-closure-dicontainer)
 
 ```js
+var diContainer = require('closure-dicontainer');
+
 var src = diContainer(fs.readFileSync(depsPath, {
   encoding: 'utf8'
 }), {
