@@ -1,0 +1,8 @@
+{
+  "name": "closure-dicontainer",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "closure-library": "git://github.com/steida/google-closure-library.git"
+  }
+}

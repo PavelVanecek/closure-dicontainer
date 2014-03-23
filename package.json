@@ -1,0 +1,45 @@
+{
+  "name": "closure-dicontainer",
+  "version": "0.1.0",
+  "description": "DI Container for Google Closure with automatic registration and resolving based on types",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "homepage": "https://github.com/steida/closure-dicontainer",
+  "author": {
+    "name": "Daniel Steigerwald",
+    "email": "daniel@steigerwald.cz",
+    "url": "steigerwald.cz"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/steida/closure-dicontainer.git"
+  },
+  "main": "lib/index.js",
+  "keywords": [
+    "google",
+    "closure",
+    "di",
+    "dependency",
+    "injection",
+    "container"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/steida/closure-dicontainer/issues"
+  },
+  "dependencies": {
+    "esprima": "^1.0.4",
+    "doctrine": "^0.5.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.5.6",
+    "coffee-script": "^1.7.1",
+    "gulp-coffee": "^1.4.1",
+    "gulp-plumber": "^0.5.6",
+    "gulp-util": "^2.2.14",
+    "gulp-mocha": "^0.4.1",
+    "gulp-if": "0.0.5",
+    "chai": "^1.9.1"
+  }
+}
