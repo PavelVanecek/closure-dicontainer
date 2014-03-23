@@ -1,7 +1,7 @@
 module.exports = (diContainerName, resolve, typeParser, requiredBy) ->
 
   ->
-    # NOTE(steida): Why these two deps?
+    # These requires are used in generated DI container.
     required =
       'goog.asserts': true
       'goog.functions': true

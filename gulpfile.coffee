@@ -11,7 +11,9 @@ paths =
     './src/**/*.coffee'
     './test/**/*.coffee'
   ]
-  bddTest: 'test/*.js'
+  bddTest: [
+    'test/*.js'
+  ]
 
 gulp.task 'coffee', ->
   gulp.src paths.coffee
