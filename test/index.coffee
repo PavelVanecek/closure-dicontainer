@@ -1,4 +1,3 @@
-assert = require('chai').assert
 readFileSync = require('fs').readFileSync
 
 index = require '../lib'

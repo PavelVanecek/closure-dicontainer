@@ -1,20 +1,16 @@
 gulp = require 'gulp'
 
 chai = require 'chai'
-clean = require 'gulp-clean'
 coffee = require 'gulp-coffee'
 gulpif = require 'gulp-if'
 gutil = require 'gulp-util'
 mocha = require 'gulp-mocha'
 plumber = require 'gulp-plumber'
+runSequence = require 'run-sequence'
 
 global.assert = chai.assert
 
 paths =
-  clean: [
-    'src/*.js'
-    'test/*.js'
-  ]
   coffee: [
     'src/*.coffee'
     'test/*.coffee'
@@ -22,11 +18,7 @@ paths =
   bddTest: 'test/*.js'
   tddTest: 'lib/*.js'
 
-gulp.task 'clean', ->
-  gulp.src paths.clean
-    .pipe clean()
-
-gulp.task 'coffee', ['clean'], ->
+gulp.task 'coffee', ->
   gulp.src paths.coffee
     .pipe plumber()
     .pipe coffee bare: true
@@ -34,9 +26,7 @@ gulp.task 'coffee', ['clean'], ->
     .pipe gulpif /\/src/, gulp.dest 'lib'
     .pipe gulpif /\/test/, gulp.dest 'test'
 
-gulp.task 'test', ['bddTest', 'tddTest']
-
-gulp.task 'bddTest', ['coffee'], ->
+gulp.task 'bddTest', ->
   gulp.src paths.bddTest
     .pipe mocha ui: 'bdd'
     .on 'error', (e) ->
@@ -44,7 +34,7 @@ gulp.task 'bddTest', ['coffee'], ->
       # Ensure watch is running despite error.
       @emit 'end'
 
-gulp.task 'tddTest', ['coffee'], ->
+gulp.task 'tddTest', ->
   gulp.src paths.tddTest
     .pipe mocha ui: 'tdd'
     .on 'error', (e) ->
@@ -52,9 +42,14 @@ gulp.task 'tddTest', ['coffee'], ->
       # Ensure watch is running despite error.
       @emit 'end'
 
-gulp.task 'build', ['test']
+gulp.task 'test', (callback) ->
+  runSequence 'bddTest', 'tddTest', callback
+
+gulp.task 'build', (callback) ->
+  runSequence 'coffee', 'test', callback
 
 gulp.task 'watch', ->
   gulp.watch paths.coffee, ['build']
 
-gulp.task 'default', ['build', 'watch']
+gulp.task 'default', (callback) ->
+  runSequence 'build', 'watch', callback

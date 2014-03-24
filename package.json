@@ -41,6 +41,6 @@
     "gulp-mocha": "^0.4.1",
     "gulp-if": "0.0.5",
     "chai": "^1.9.1",
-    "gulp-clean": "^0.2.4"
+    "run-sequence": "^0.3.6"
   }
 }
