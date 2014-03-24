@@ -32,13 +32,6 @@ suite 'typeParser', ->
   parse = (type, resolving) ->
     typeParser(typesPaths, readFileSync) type, resolving
 
-  arrangeErrorWarnCalls = (errorMessage) ->
-    # calls = ''
-
-  assertNullResultWithErrorAndWarnCalls = (calls, parsed) ->
-    assert.equal calls(), 'errorwarn'
-    assert.isNull parsed
-
   arrangeType = (type, src) ->
     typesPaths[type] = type
     sources[type] = src
@@ -64,15 +57,15 @@ suite 'typeParser', ->
       arguments: []
       invokeAs: 'class'
       implements: []
-
+  #
   test 'should handle missing file', ->
-    calls = arrangeErrorWarnCalls "File 'app/a.js' failed to load."
     readFileSync = (file) -> throw new Error 'anything wrong'
-    parsed = parse 'app.A'
-    assertNullResultWithErrorAndWarnCalls calls, parsed
+    assert.throw ->
+      parsed = parse 'app.A'
+    , "File 'app/a.js' failed to load."
+
 
   test 'should handle missing type definition in source', ->
-    calls = arrangeErrorWarnCalls "Type 'app.A' definition not found in file: 'app/a.js'."
     readFileSync = (file) -> """
       /**
        * @param {B} b
@@ -81,31 +74,31 @@ suite 'typeParser', ->
        */
       fok.A = function(
     """
-    parsed = parse 'app.A'
-    assertNullResultWithErrorAndWarnCalls calls, parsed
+    assert.throw ->
+      parsed = parse 'app.A'
+    , "Type 'app.A' definition not found in file: 'app/a.js'."
 
   test 'should handle esprima parser error', ->
-    calls = arrangeErrorWarnCalls """
-      Esprima failed to parse type 'app.A'.
-      Line 2: Unexpected end of input
-    """
     readFileSync = (file) -> """
       !
       app.A = function(
     """
-    parsed = parse 'app.A'
-    assertNullResultWithErrorAndWarnCalls calls, parsed
+    assert.throw ->
+      parsed = parse 'app.A'
+    , """
+      Esprima failed to parse type 'app.A'.
+      Line 2: Unexpected end of input
+    """
 
   test 'should handle missing any annotation in source', ->
-    calls = arrangeErrorWarnCalls "Type 'app.A' annotation not found in file: 'app/a.js'."
     readFileSync = (file) -> """
       app.A = function(
     """
-    parsed = parse 'app.A'
-    assertNullResultWithErrorAndWarnCalls calls, parsed
+    assert.throw ->
+      parsed = parse 'app.A'
+    , "Type 'app.A' annotation not found in file: 'app/a.js'."
 
   test 'should handle missing type annotation in source', ->
-    calls = arrangeErrorWarnCalls "Type 'app.A' annotation not found in file: 'app/a.js'."
     readFileSync = (file) -> """
       /**
        * @type {string}
@@ -113,8 +106,9 @@ suite 'typeParser', ->
       var a;
       app.A = function(
     """
-    parsed = parse 'app.A'
-    assertNullResultWithErrorAndWarnCalls calls, parsed
+    assert.throw ->
+      parsed = parse 'app.A'
+    , "Type 'app.A' annotation not found in file: 'app/a.js'."
 
   test 'should ignore optional types', ->
     arrangeType 'app.C', """

@@ -1,6 +1,6 @@
-index = require './index'
+create = require './create'
 
-suite 'index', ->
+suite 'create', ->
 
   createIntro = null
   createBody = null
@@ -14,7 +14,7 @@ suite 'index', ->
     createOutro = -> 'outro'
 
   runGenerator = ->
-    index(createIntro, createBody, createOutro)()
+    create(createIntro, createBody, createOutro)()
 
   test 'should call intro with params', (done) ->
     createIntro = (p_required) ->

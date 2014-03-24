@@ -74,9 +74,6 @@ suite 'body', ->
     factory = body diContainerName, resolve, typeParser, requiredBy
     resolved = factory()
 
-  assertErrorAndWarnCalls = (calls) ->
-    assert.equal calls(), 'errorwarn'
-
   test 'should resolve dependencies', ->
     resolveFactory()
     assert.equal resolved.src, """
@@ -211,40 +208,38 @@ suite 'body', ->
     resolveFactory()
     assert.equal resolved.src, ""
 
-  # test 'should detect circular dependency', ->
-  #   calls = arrangeErrorWarnCalls """
-  #     Can't create 'app.A' as it has circular dependency: app.A -> B -> app.A.
-  #   """
-  #   types =
-  #     'app.A':
-  #       arguments: [
-  #         name: 'b'
-  #         type: 'B'
-  #       ]
-  #     'B':
-  #       arguments: [
-  #         name: 'a'
-  #         type: 'app.A'
-  #       ]
-  #   resolveFactory()
-  #   assertErrorAndWarnCalls calls
-  #
-  # test 'should detect wrong usage', ->
-  #   calls = arrangeErrorWarnCalls """
-  #     Wrong DI container usage detected. Please do not use DI container as
-  #     service locator. The only right place for DI container is
-  #     composition root.
-  #
-  #     blog.ploeh.dk/2010/02/03/ServiceLocatorisanAnti-Pattern.
-  #     blog.ploeh.dk/2011/07/28/CompositionRoot
-  #   """
-  #   types =
-  #     'app.A':
-  #       arguments: [
-  #         name: 'diContainer'
-  #         type: 'app.DiContainer'
-  #       ]
-  #     'app.DiContainer':
-  #       arguments: []
-  #   resolveFactory()
-  #   assertErrorAndWarnCalls calls
+  test 'should detect circular dependency', ->
+    types =
+      'app.A':
+        arguments: [
+          name: 'b'
+          type: 'B'
+        ]
+      'B':
+        arguments: [
+          name: 'a'
+          type: 'app.A'
+        ]
+
+    assert.throw resolveFactory, """
+      Can't create 'app.A' as it has circular dependency: app.A -> B -> app.A.
+    """
+
+  test 'should detect wrong usage', ->
+    types =
+      'app.A':
+        arguments: [
+          name: 'diContainer'
+          type: 'app.DiContainer'
+        ]
+      'app.DiContainer':
+        arguments: []
+
+    assert.throw resolveFactory, """
+      Wrong DI container usage detected. Please do not use DI container as
+      service locator. The only right place for DI container is
+      composition root.
+
+      blog.ploeh.dk/2010/02/03/ServiceLocatorisanAnti-Pattern.
+      blog.ploeh.dk/2011/07/28/CompositionRoot
+    """
