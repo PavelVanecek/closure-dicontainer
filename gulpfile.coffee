@@ -1,55 +1,55 @@
 gulp = require 'gulp'
 
 chai = require 'chai'
+clean = require 'gulp-clean'
 coffee = require 'gulp-coffee'
-gulpif = require 'gulp-if'
+eventStream = require 'event-stream'
 gutil = require 'gulp-util'
 mocha = require 'gulp-mocha'
 plumber = require 'gulp-plumber'
-runSequence = require 'run-sequence'
 
 global.assert = chai.assert
 
 paths =
-  coffee: [
-    'src/*.coffee'
-    'test/*.coffee'
+  clean: [
+    './lib'
+    './test/*.js'
   ]
-  bddTest: 'test/*.js'
-  tddTest: 'lib/*.js'
+  scripts:
+    lib: 'src/*.coffee'
+    test: 'test/*.coffee'
+  test:
+    tdd: 'lib/*_test.js'
+    bdd: 'test/*.js'
 
-gulp.task 'coffee', ->
-  gulp.src paths.coffee
-    .pipe plumber()
-    .pipe coffee bare: true
-    .on 'error', (err) -> gutil.log err.message
-    .pipe gulpif /\/src/, gulp.dest 'lib'
-    .pipe gulpif /\/test/, gulp.dest 'test'
+gulp.task 'clean', ->
+  gulp.src paths.clean, read: false
+    .pipe clean()
 
-gulp.task 'bddTest', ->
-  gulp.src paths.bddTest
-    .pipe mocha ui: 'bdd'
-    .on 'error', (e) ->
-      gutil.log e.message
-      # Ensure watch is running despite error.
-      @emit 'end'
+gulp.task 'scripts', ->
+  streams = for dest, src of paths.scripts
+    gulp.src src
+      .pipe plumber()
+      .pipe coffee bare: true
+      .on 'error', (err) -> gutil.log err.message
+      .pipe gulp.dest dest
+  eventStream.merge streams...
 
-gulp.task 'tddTest', ->
-  gulp.src paths.tddTest
-    .pipe mocha ui: 'tdd'
-    .on 'error', (e) ->
-      gutil.log e.message
-      # Ensure watch is running despite error.
-      @emit 'end'
+gulp.task 'test', ['scripts'], ->
+  streams = for type, src of paths.test
+    gulp.src src
+      .pipe mocha ui: type
+      .on 'error', (e) ->
+        gutil.log e.message
+        # Ensure watch isn't stopped on error.
+        @emit 'end'
+  eventStream.merge streams...
 
-gulp.task 'test', (callback) ->
-  runSequence 'bddTest', 'tddTest', callback
+gulp.task 'build', ['test']
 
-gulp.task 'build', (callback) ->
-  runSequence 'coffee', 'test', callback
+gulp.task 'run', ->
+  src = (src for dest, src of paths.scripts)
+  gulp.watch src, ['build']
 
-gulp.task 'watch', ->
-  gulp.watch paths.coffee, ['build']
-
-gulp.task 'default', (callback) ->
-  runSequence 'build', 'watch', callback
+gulp.task 'default', ['clean'], ->
+  gulp.start 'build', 'run'
