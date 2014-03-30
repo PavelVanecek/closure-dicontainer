@@ -31,11 +31,11 @@ module.exports = (depsSrc, options = {}) ->
 
   [typesPaths, requiredBy] = parseDeps options.name, depsSrc, options.baseJsDir
 
-  typeParser = typeParser typesPaths
-  intro = intro options.name
-  body = body options.name, options.resolve, typeParser, requiredBy
-  outro = outro options.name
-  container = create(intro, body, outro)()
+  container = create(
+    intro(options.name),
+    body(options.name, options.resolve, typeParser(typesPaths), requiredBy),
+    outro(options.name)
+  )()
 
   container.code
 
