@@ -3,6 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "closure-library": "git://github.com/steida/google-closure-library.git"
+    "closure-library": "git+https://code.google.com/p/closure-library/"
   }
 }
