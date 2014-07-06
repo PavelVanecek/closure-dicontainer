@@ -98,7 +98,7 @@ There is a pattern: **Resolve A as B with C by D**.
 A is type to be resolved. B is optional type to be returned. C is optional object for run-time
 configuration, where key is argument name and value is runtime value. D is optional factory method.
 
-Available in [Este](http://github.com/steida/este) soon. Stay tuned.
+Enjoy in action in [Este.js](http://github.com/steida/este).
 
 #### So how does it really work?
 
