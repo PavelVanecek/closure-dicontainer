@@ -1,6 +1,6 @@
 {
   "name": "closure-dicontainer",
-  "version": "0.1.0",
+  "version": "0.1.8",
   "private": true,
   "devDependencies": {
     "closure-library": "https://github.com/google/closure-library.git"

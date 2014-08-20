@@ -1,6 +1,6 @@
 {
   "name": "closure-dicontainer",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "DI Container for Google Closure with automatic registration and resolving based on types",
   "scripts": {
     "test": "gulp test"
