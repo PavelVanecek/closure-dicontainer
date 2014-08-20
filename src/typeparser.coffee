@@ -66,6 +66,7 @@ getDefinition = (type, annotation, typesPaths) ->
 getArguments = (tags, typesPaths) ->
   for tag in tags
     continue if tag.title != 'param'
+    continue if !tag.type
     continue if tag.type.type == 'OptionalType'
 
     name: tag.name
