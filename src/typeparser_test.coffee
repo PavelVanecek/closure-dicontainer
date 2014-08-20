@@ -59,7 +59,7 @@ suite 'typeParser', ->
       implements: []
   #
   test 'should handle missing file', ->
-    readFileSync = (file) -> throw new Error 'anything wrong'
+    readFileSync = (file) -> throw Error 'anything wrong'
     assert.throw ->
       parsed = parse 'app.A'
     , "File 'app/a.js' failed to load."

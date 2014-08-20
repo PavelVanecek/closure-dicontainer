@@ -50,7 +50,7 @@ module.exports = (diContainerName, resolve, typeParser, requiredBy) ->
 detectCircularDependency = (type, resolving) ->
   if resolving.indexOf(type) > -1
     dependency = resolving.concat(type).join ' -> '
-    throw new Error """
+    throw Error """
       Can't create '#{type}' as it has circular dependency: #{dependency}.
     """
     return true
@@ -64,7 +64,7 @@ detectCircularDependency = (type, resolving) ->
 ###
 detectWrongUsage = (type, diContainerName, resolving) ->
   if type == diContainerName
-    throw new Error """
+    throw Error """
       Wrong DI container usage detected. Please do not use DI container as
       service locator. The only right place for DI container is
       composition root.

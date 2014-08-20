@@ -23,7 +23,7 @@ getAnnotation = (file, src, type) ->
   typeIndex = src.indexOf "#{type} ="
 
   if typeIndex == -1
-    throw new Error "Type '#{type}' definition not found in file: '#{file}'."
+    throw Error "Type '#{type}' definition not found in file: '#{file}'."
     return
 
   src = stripCodeAfterAnnotation src, typeIndex
@@ -34,7 +34,7 @@ getAnnotation = (file, src, type) ->
       comment: true
       tokens: true
   catch e
-    throw new Error """
+    throw Error """
       Esprima failed to parse type '#{type}'.
       #{e.message}
     """
@@ -46,7 +46,7 @@ getAnnotation = (file, src, type) ->
     lastComment && !lastToken ||
     (lastToken && lastComment.range[1] > lastToken.range[1])
   if !lastCommentBelongToType
-    throw new Error "Type '#{type}' annotation not found in file: '#{file}'."
+    throw Error "Type '#{type}' annotation not found in file: '#{file}'."
     return
 
   lastComment.value
