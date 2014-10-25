@@ -1,4 +1,5 @@
 # closure-dicontainer
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/steida/closure-dicontainer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://secure.travis-ci.org/steida/closure-dicontainer.png?branch=master)](http://travis-ci.org/steida/closure-dicontainer) [![Dependency Status](https://david-dm.org/steida/closure-dicontainer.png)](https://david-dm.org/steida/closure-dicontainer) [![devDependency Status](https://david-dm.org/steida/closure-dicontainer/dev-status.png)](https://david-dm.org/steida/closure-dicontainer#info=devDependencies)
 
 > Dependency Injection Container for Google Closure Library
