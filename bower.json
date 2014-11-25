@@ -3,6 +3,6 @@
   "version": "0.1.9",
   "private": true,
   "devDependencies": {
-    "closure-library": "https://github.com/google/closure-library.git"
+    "closure-library": "google/closure-library"
   }
 }
