@@ -50,6 +50,29 @@ Optional
 
 How to use DI container in your app.
 
+#### How to get a type resolved
+
+Annotate the class using [`@param` annotations](https://developers.google.com/closure/compiler/docs/js-for-compiler):
+
+```js
+goog.provide('my.Thing');
+
+// do not `goog.require` the dependency
+
+/**
+  * Constructor annotation is optional.
+  * @constructor
+  * Param annotation must contain correct class name.
+  * The actual parameter name is mandatory, but can be customized
+  * @param {my.Thing} foo
+  */
+my.Thing = function(foo) { /* ... */ }
+```
+
+#### Custom configuration
+
+The class required is called with `new` by default. This is customizable:
+
 ```js
 /**
   @fileoverview App main method.
